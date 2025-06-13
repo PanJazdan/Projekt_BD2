@@ -83,6 +83,12 @@ namespace UdtReaderApp.Utils
                                         case "Email":
                                             udtValue = Email.Parse(new System.Data.SqlTypes.SqlString(val));
                                             break;
+                                        case "ColorRGB":
+                                            udtValue = ColorRGB.Parse(new System.Data.SqlTypes.SqlString(val));
+                                            break;
+                                        case "MoneyType":
+                                            udtValue = MoneyType.Parse(new System.Data.SqlTypes.SqlString(val));
+                                            break;
                                         default:
                                             throw new NotSupportedException($"UDT type {udtType} is not supported.");
                                     }
