@@ -100,7 +100,7 @@ namespace UdtReaderApp
                             string csvPath = Console.ReadLine();
                             CsvImporter.ImportCsvToTable(
                                 connectionString,
-                                "Users",
+                                "Currency",
                                 csvPath,
                                 new Dictionary<string, string> { { "MoneyValue", "MoneyType" } }
                             );
