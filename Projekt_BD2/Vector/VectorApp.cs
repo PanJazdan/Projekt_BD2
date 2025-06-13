@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using UdtReaderApp.Models;
 using UdtReaderApp.Services;
+using UdtReaderApp.Utils;
 
 namespace UdtReaderApp
 {
@@ -17,7 +19,7 @@ namespace UdtReaderApp
         }
 
         // Metoda Run zawiera całą logikę menu i interakcji dla Vector3D
-        public void Run()
+        public void Run(string connectionString)
         {
             Console.WriteLine("--- Aplikacja Zarządzania Wektorami (CLR UDT Vector3D) ---");
 
@@ -32,6 +34,7 @@ namespace UdtReaderApp
                 Console.WriteLine("6. Mnożenie wektora przez skalar");
                 Console.WriteLine("7. Iloczyn skalarny (dot product) dwóch wektorów");
                 Console.WriteLine("8. Iloczyn wektorowy (cross product) dwóch wektorów");
+                Console.WriteLine("9. Dodaj rekordy przez plik CSV");
                 Console.WriteLine("0. Wyjdź");
                 Console.Write("Wybierz opcję: ");
 
@@ -146,6 +149,17 @@ namespace UdtReaderApp
                             }
                             var cross = _vectorService.CrossProduct(cid1, cid2);
                             Console.WriteLine($"Iloczyn wektorowy: {cross}");
+                            break;
+
+                        case "9":
+                            Console.Write("Podaj ścieżkę do pliku CSV: ");
+                            string csvPath = Console.ReadLine();
+                            CsvImporter.ImportCsvToTable(
+                                connectionString,
+                                "Vectors",
+                                csvPath,
+                                new Dictionary<string, string> { { "Vector", "Vector3D" } }
+                            );
                             break;
 
                         case "0":

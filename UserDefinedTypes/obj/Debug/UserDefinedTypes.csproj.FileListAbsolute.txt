@@ -1,5 +1,3 @@
-D:\Visual Studio\Projects\Bazy danych\UserDefinedTypes\obj\Debug\UserDefinedTypes.csproj.AssemblyReference.cache
-D:\Visual Studio\Projects\Bazy danych\UserDefinedTypes\obj\Debug\UserDefinedTypes.csproj.CoreCompileInputs.cache
 D:\Visual Studio\Projects\Bazy danych\UserDefinedTypes\bin\Debug\x86\SqlServerSpatial160.dll
 D:\Visual Studio\Projects\Bazy danych\UserDefinedTypes\bin\Debug\x64\SqlServerSpatial160.dll
 D:\Visual Studio\Projects\Bazy danych\UserDefinedTypes\bin\Debug\UserDefinedTypes.dll
@@ -15,6 +13,8 @@ D:\Visual Studio\Projects\Bazy danych\UserDefinedTypes\bin\Debug\pt\Microsoft.Sq
 D:\Visual Studio\Projects\Bazy danych\UserDefinedTypes\bin\Debug\ru\Microsoft.SqlServer.Types.resources.dll
 D:\Visual Studio\Projects\Bazy danych\UserDefinedTypes\bin\Debug\zh-Hans\Microsoft.SqlServer.Types.resources.dll
 D:\Visual Studio\Projects\Bazy danych\UserDefinedTypes\bin\Debug\zh-Hant\Microsoft.SqlServer.Types.resources.dll
+D:\Visual Studio\Projects\Bazy danych\UserDefinedTypes\obj\Debug\UserDefinedTypes.csproj.AssemblyReference.cache
+D:\Visual Studio\Projects\Bazy danych\UserDefinedTypes\obj\Debug\UserDefinedTypes.csproj.CoreCompileInputs.cache
 D:\Visual Studio\Projects\Bazy danych\UserDefinedTypes\obj\Debug\UserDefi.E4366E19.Up2Date
 D:\Visual Studio\Projects\Bazy danych\UserDefinedTypes\obj\Debug\UserDefinedTypes.dll
 D:\Visual Studio\Projects\Bazy danych\UserDefinedTypes\obj\Debug\UserDefinedTypes.pdb

@@ -49,12 +49,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Color\Color.cs" />
+    <Compile Include="Color\ColorApp.cs" />
+    <Compile Include="Color\ColorRepository.cs" />
+    <Compile Include="Color\ColorService.cs" />
+    <Compile Include="CSVimporter.cs" />
+    <Compile Include="Currency\Currency.cs" />
+    <Compile Include="Currency\CurrencyApp.cs" />
+    <Compile Include="Currency\CurrencyRepository.cs" />
+    <Compile Include="Currency\CurrencyService.cs" />
     <Compile Include="Email\EmailApp.cs" />
+    <Compile Include="GeoLocation\Location.cs" />
+    <Compile Include="GeoLocation\LocationApp.cs" />
+    <Compile Include="GeoLocation\LocationRepository.cs" />
+    <Compile Include="GeoLocation\LocationService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Email\User.cs" />
     <Compile Include="Email\UserRepository.cs" />
     <Compile Include="Email\UserService.cs" />
+    <Compile Include="Unit\Unit.cs" />
+    <Compile Include="Unit\UnitApp.cs" />
+    <Compile Include="Unit\UnitRepository.cs" />
+    <Compile Include="Unit\UnitService.cs" />
     <Compile Include="Vector\Vector.cs" />
     <Compile Include="Vector\VectorApp.cs" />
     <Compile Include="Vector\VectorRepository.cs" />

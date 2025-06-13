@@ -1,6 +1,8 @@
 ﻿using System;
-using UdtReaderApp.Services;
+using System.Collections.Generic;
 using System.Data.SqlTypes; // Potrzebne dla SqlString w Email.Parse
+using UdtReaderApp.Services;
+using UdtReaderApp.Utils;
 
 namespace UdtReaderApp
 {
@@ -16,7 +18,7 @@ namespace UdtReaderApp
         }
 
         // Metoda Run zawiera całą logikę menu i interakcji dla Email
-        public void Run()
+        public void Run(string connectionString)
         {
             Console.WriteLine("--- Aplikacja Zarządzania Użytkownikami (CLR UDT Email) ---");
 
@@ -27,6 +29,7 @@ namespace UdtReaderApp
                 Console.WriteLine("2. Wyświetl wszystkich użytkowników");
                 Console.WriteLine("3. Wyszukaj użytkowników po części emaila (nazwa użytkownika/domena)");
                 Console.WriteLine("4. Usuń użytkownika po ID");
+                Console.WriteLine("5. Dodaj rekordy przez plik CSV");
                 Console.WriteLine("0. Wyjdź");
                 Console.Write("Wybierz opcję: ");
 
@@ -62,6 +65,17 @@ namespace UdtReaderApp
                                 break;
                             }
                             _userService.DeleteUser(deleteId);
+                            break;
+
+                        case "5":
+                            Console.Write("Podaj ścieżkę do pliku CSV: ");
+                            string csvPath = Console.ReadLine();
+                            CsvImporter.ImportCsvToTable(
+                                connectionString,
+                                "Users",
+                                csvPath,
+                                new Dictionary<string, string> { { "User", "Email" } }
+                            );
                             break;
 
                         case "0":
