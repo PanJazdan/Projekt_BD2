@@ -8,10 +8,14 @@ CREATE TABLE Vectors(
     Vec Vector3D NOT NULL
     );
 
+
+
 CREATE TABLE Units(
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Ut UnitSI NOT NULL
     );
+
+
 
 CREATE TABLE Locations(
     Id INT IDENTITY(1,1) PRIMARY KEY,
@@ -29,8 +33,5 @@ CREATE TABLE Currency (
     MoneyValue MoneyType NOT NULL
 );
 
-INSERT INTO Currency (MoneyValue)
-VALUES ('123.45 [PLN]');
 
-select * from Currency;
 
