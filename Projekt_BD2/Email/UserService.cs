@@ -52,8 +52,7 @@ namespace UdtReaderApp.Services
             Console.WriteLine($"\n--- Wyszukiwanie użytkowników po {type} ({searchTerm}) ---");
             if (type.Equals("name", StringComparison.OrdinalIgnoreCase))
             {
-                // W tym przypadku 'name' oznacza ogólne wyszukiwanie w adresie email
-                // bo nie mamy kolumny 'Name' w tabeli Users
+  
                 return _userRepository.SearchUsersByEmailPart(searchTerm);
             }
             else

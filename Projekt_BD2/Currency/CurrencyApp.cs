@@ -18,7 +18,7 @@ namespace UdtReaderApp
 
         private void DisplaySupportedCurrencies()
         {
-            // Use reflection to get the IsoCurrencies list from MoneyType
+        
             var field = typeof(MoneyType).GetField("IsoCurrencies", BindingFlags.NonPublic | BindingFlags.Static);
             if (field != null)
             {

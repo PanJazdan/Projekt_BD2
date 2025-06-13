@@ -23,7 +23,7 @@ namespace UdtReaderApp.Repositories
                 string query = "INSERT INTO Users (ContactEmail) VALUES (@ContactEmail)";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    // Usunięto parametr @Id, bo Id jest generowane automatycznie przez IDENTITY
+                
 
                     SqlParameter emailParam = new SqlParameter("@ContactEmail", user.ContactEmail);
                     emailParam.SqlDbType = SqlDbType.Udt;

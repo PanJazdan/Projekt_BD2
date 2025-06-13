@@ -27,3 +27,4 @@ D:\Visual Studio\Projects\Bazy danych\Projekt_BD2\obj\Debug\Projekt_BD2.csproj.C
 D:\Visual Studio\Projects\Bazy danych\Projekt_BD2\obj\Debug\Projekt_.4A977A8C.Up2Date
 D:\Visual Studio\Projects\Bazy danych\Projekt_BD2\obj\Debug\Projekt_BD2.exe
 D:\Visual Studio\Projects\Bazy danych\Projekt_BD2\obj\Debug\Projekt_BD2.pdb
+D:\Visual Studio\Projects\Bazy danych\Projekt_BD2\obj\Debug\Projekt_BD2.exe.config

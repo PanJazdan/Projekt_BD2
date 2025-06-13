@@ -13,9 +13,9 @@ public struct UnitSI : INullable, IBinarySerialize
 
     public double Value;
 
-    public string Unit; // Jednostka jako prosty string
+    public string Unit; 
 
-    // Stały słownik przedrostków (pozostaje, bo jest używany w ToPrefixedString)
+    
     private static Dictionary<string, double> GetPrefixes()
     {
         return new Dictionary<string, double>(StringComparer.Ordinal)
@@ -50,16 +50,15 @@ public struct UnitSI : INullable, IBinarySerialize
             UnitSI u = new UnitSI();
             u.is_Null = true;
             u.Value = 0;
-            u.Unit = "none"; // Domyślna "pusta" jednostka, nigdy null
+            u.Unit = "none"; 
             return u;
         }
     }
 
-    // --- Uproszczony Konstruktor ---
+   
     public UnitSI(double value, string unit)
     {
-        // Minimalna walidacja: Unit nie może być null lub pusty, aby uniknąć błędów serializacji stringa.
-        // Konwencja "none" pozwala na "bezwymiarowe" jednostki.
+       
         this.Unit = string.IsNullOrEmpty(unit) ? "none" : unit;
         this.Value = value;
         this.is_Null = false;
@@ -73,24 +72,19 @@ public struct UnitSI : INullable, IBinarySerialize
         {
             throw new ArgumentException("Invalid UnitSI object. Validation failed.");
         }
-        // Celowo usunięto walidację NaN/Infinity i wywołanie ValidateUnitSI, aby był "trywialny".
+     
     }
 
-    // --- Uproszczona Metoda ValidateUnitSI ---
-    // Jest wywoływana przez SQL Server; zwraca zawsze true, jeśli obiekt nie jest NULL.
-    // Inne walidacje przeniesione na miejsce, gdzie są potrzebne (np. Parse).
+
     private bool ValidateUnitSI()
     {
-        // Jeśli obiekt jest Null, zawsze jest poprawny
+     
         if (this.IsNull) return true;
-
-        
 
         return true;
     }
 
-    // --- Uproszczona Metoda Parse ---
-    // Akceptuje niemal każdy format, skupia się na podstawowej konwersji.
+
     [SqlMethod(OnNullCall = false)]
     public static UnitSI Parse(SqlString s)
     {
@@ -100,27 +94,26 @@ public struct UnitSI : INullable, IBinarySerialize
         int bracketIndex = value.IndexOf('[');
         int lastBracketIndex = value.LastIndexOf(']');
 
-        // Podstawowa walidacja formatu 'value [unit]'
+        
         if (bracketIndex == -1 || lastBracketIndex == -1 || lastBracketIndex <= bracketIndex)
         {
-            // Nadal rzucamy wyjątek dla rażąco nieprawidłowego formatu
             throw new ArgumentException("Invalid format for UnitSI. Expected 'value [unit]'.");
         }
 
         string numPart = value.Substring(0, bracketIndex).Trim();
         string unitPart = value.Substring(bracketIndex + 1, lastBracketIndex - bracketIndex - 1).Trim();
 
-        // Jednostka nie może być pusta po wyodrębnieniu z nawiasów
+      
         if (string.IsNullOrEmpty(unitPart))
         {
             throw new ArgumentException("Unit part cannot be empty in UnitSI string. Expected 'value [unit]'.");
         }
 
         double val;
-        // Podstawowa walidacja parsowania liczby
+        
         if (!double.TryParse(numPart, NumberStyles.Any, CultureInfo.InvariantCulture, out val))
         {
-            // Nadal rzucamy wyjątek, jeśli nie można sparsować liczby
+           
             throw new ArgumentException("Invalid numeric value in UnitSI string.");
         }
 
@@ -144,12 +137,12 @@ public struct UnitSI : INullable, IBinarySerialize
         return $"{Value.ToString(CultureInfo.InvariantCulture)} [{Unit}]";
     }
 
-    // --- Operacje Arytmetyczne (logika "none" pozostaje) ---
+  
     [SqlMethod(OnNullCall = false)]
     public static UnitSI Add(UnitSI u1, UnitSI u2)
     {
         if (u1.IsNull || u2.IsNull) return Null;
-        // Jednostki muszą być identyczne dla dodawania (stringowo)
+    
         if (!u1.Unit.Equals(u2.Unit, StringComparison.Ordinal))
         {
             throw new ArgumentException("Units must be identical for addition.");
@@ -234,7 +227,6 @@ public struct UnitSI : INullable, IBinarySerialize
         return new UnitSI(u.Value / scalar, u.Unit);
     }
 
-    // --- Metoda ToPrefixedString (zachowuje logikę przeliczania wartości dla znanych jednostek) ---
     [SqlMethod(OnNullCall = false)]
     public SqlString ToPrefixedString(SqlString prefix)
     {
@@ -245,19 +237,15 @@ public struct UnitSI : INullable, IBinarySerialize
         if (this.IsNull) return SqlString.Null;
         if (prefix.IsNull || string.IsNullOrEmpty(prefix.Value))
         {
-            // Jeśli prefix jest pusty LUB "kg"
+  
             if (currentUnit.StartsWith("kg", StringComparison.OrdinalIgnoreCase))
             {
-                // Zwróć wartość w gramach (1 kg = 1000 g)
-                // Zakładamy, że Prefixes i GetPrefixes() są dostępne
-               
-                double valueInGrams = this.Value * prefixes["k"]; // 'k' to 1e3 dla kilo
+    
+                double valueInGrams = this.Value * prefixes["k"]; 
                 return new SqlString($"{valueInGrams.ToString(CultureInfo.InvariantCulture)} [g]");
             }
             else
             {
-                // W przeciwnym razie, jeśli prefix jest pusty, a jednostka to nie "kg",
-                // po prostu zwróć standardowy format ToString()
                 return new SqlString(this.ToString());
             }
         }
@@ -274,21 +262,18 @@ public struct UnitSI : INullable, IBinarySerialize
         double currentValue = this.Value;
         
         string newUnitPrefix = targetPrefix;
-        string baseUnitForDisplay = currentUnit; // Domyślna jednostka do wyświetlenia
+        string baseUnitForDisplay = currentUnit; 
 
-        // Logika konwersji wartości dla kg i innych jednostek z przedrostkami.
-        // Ta część nadal opiera się na BaseSiUnits i Prefixes, aby konwersje miały sens.
-        // Jeśli Unit jest dowolny (np. "foo"), to ten blok nie zadziała, a wyświetli [targetPrefixfoo].
         string actualBaseUnitOfCurrent = currentUnit;
         double currentUnitPrefixFactor = 1.0;
 
-        // Spróbuj wydobyć bazową jednostkę i jej prefix z obecnej jednostki
+
         foreach (var p in prefixes.Keys)
         {
             if (p != "" && currentUnit.StartsWith(p, StringComparison.Ordinal) && currentUnit.Length > p.Length)
             {
                 string tempBase = currentUnit.Substring(p.Length);
-                // Jeśli pozostałość to znana bazowa jednostka SI
+
                 if (baseSiUnits.Contains(tempBase))
                 {
                     actualBaseUnitOfCurrent = tempBase;
@@ -300,26 +285,24 @@ public struct UnitSI : INullable, IBinarySerialize
 
         if (currentUnit.StartsWith("kg", StringComparison.OrdinalIgnoreCase))
         {
-            // Specjalna obsługa dla kg
+
             double valueInGrams = currentValue * prefixes["k"];
             currentValue = valueInGrams / targetFactor;
             baseUnitForDisplay = currentUnit.Substring(1);
         }
-        else if (baseSiUnits.Contains(actualBaseUnitOfCurrent)) // Jeśli obecna jednostka jest bazową SI (ew. z prefixem)
+        else if (baseSiUnits.Contains(actualBaseUnitOfCurrent)) 
         {
-            // Przelicz wartość z obecnej bazowej jednostki na docelową z przedrostkiem
             currentValue = (this.Value * currentUnitPrefixFactor) / targetFactor;
         }
         else
         {
             currentValue = this.Value / targetFactor;
-            baseUnitForDisplay = currentUnit; // Zachowaj oryginalny string jednostki
+            baseUnitForDisplay = currentUnit; 
         }
 
         return new SqlString($"{currentValue.ToString(CultureInfo.InvariantCulture)} [{newUnitPrefix}{baseUnitForDisplay}]");
     }
 
-    // --- IBinarySerialize (jak poprzednio, z flagą is_Null) ---
     public void Write(BinaryWriter w)
     {
         w.Write(is_Null);
@@ -345,7 +328,6 @@ public struct UnitSI : INullable, IBinarySerialize
         }
     }
 
-    // --- Equals i GetHashCode (bez zmian) ---
     public override bool Equals(object obj)
     {
         if (obj == null || !(obj is UnitSI))

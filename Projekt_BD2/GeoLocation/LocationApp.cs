@@ -7,7 +7,7 @@ using UdtReaderApp.Utils;
 
 namespace UdtReaderApp
 {
-    // Klasa LocationApp zarządza interakcją z użytkownikiem dla typu GeoLocation
+   
     internal class LocationApp
     {
         private readonly LocationService _locationService;

@@ -1,5 +1,4 @@
-﻿// Plik: Program.cs
-using System;
+﻿using System;
 using System.IO;
 using UdtReaderApp;
 using UdtReaderApp.Services;
@@ -98,7 +97,7 @@ namespace UdtReaderApp
         {
             while (true)
             {
-                Console.WriteLine("\nAby wrócić do menu głównego, wpisz 'back' i naciśnij Enter w dowolnym momencie.");
+          
                 try
                 {
                     if (app is EmailApp emailApp)

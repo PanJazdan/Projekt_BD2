@@ -7,18 +7,17 @@ using UdtReaderApp.Utils;
 
 namespace UdtReaderApp
 {
-    // Klasa UnitApp zarządza interakcją z użytkownikiem dla typu UnitSI
+
     internal class UnitApp
     {
         private readonly UnitService _unitService;
 
-        // Konstruktor przyjmuje UnitService (wstrzyknięcie zależności)
         public UnitApp(UnitService unitService)
         {
             _unitService = unitService;
         }
 
-        // Metoda Run zawiera całą logikę menu i interakcji dla UnitSI
+     
         public void Run(string connectionString)
         {
             Console.WriteLine("--- Aplikacja Zarządzania Jednostkami (CLR UDT UnitSI) ---");

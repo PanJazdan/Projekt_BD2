@@ -10,15 +10,6 @@ namespace UdtReaderApp.Utils
 {
     public static class CsvImporter
     {
-        /// <summary>
-        /// Universal CSV import method for any table with UDTs.
-        /// The first row of the CSV must contain column names matching the table.
-        /// Each value is inserted as string, UDT columns must be handled by the table's insert logic.
-        /// </summary>
-        /// <param name="connectionString">SQL connection string</param>
-        /// <param name="tableName">Target table name</param>
-        /// <param name="csvPath">Path to CSV file</param>
-        /// <param name="udtColumnTypes">Dictionary: column name -> UDT type name (e.g. "Vec" -> "Vector3D")</param>
         public static void ImportCsvToTable(string connectionString, string tableName, string csvPath, Dictionary<string, string> udtColumnTypes = null)
         {
             if (!File.Exists(csvPath))
@@ -128,7 +119,7 @@ namespace UdtReaderApp.Utils
             return names;
         }
 
-        // Handles quoted CSV values and commas inside quotes
+
         private static string[] SplitCsvLine(string line, int expectedColumns)
         {
             var result = new List<string>();
@@ -152,7 +143,6 @@ namespace UdtReaderApp.Utils
                 }
             }
             result.Add(current);
-            // Pad with empty if missing columns
             while (result.Count < expectedColumns)
                 result.Add("");
             return result.ToArray();

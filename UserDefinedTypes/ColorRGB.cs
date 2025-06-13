@@ -74,10 +74,6 @@ using Microsoft.SqlServer.Server;
         );
     }
 
-    /// <summary>
-    /// Blends this color with another color using the given ratio.
-    /// ratio = 0.0 returns this color, ratio = 1.0 returns the other color.
-    /// </summary>
     public ColorRGB Blend(ColorRGB other, double ratio)
     {
         if (ratio < 0.0 || ratio > 1.0)

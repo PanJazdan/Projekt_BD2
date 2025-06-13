@@ -6,18 +6,16 @@ using UdtReaderApp.Utils;
 
 namespace UdtReaderApp
 {
-    // Klasa EmailApp będzie zarządzać interakcją z użytkownikiem dla typu Email
+  
     public class EmailApp
     {
         private readonly UserService _userService;
 
-        // Konstruktor przyjmuje UserService, co pozwala na wstrzyknięcie zależności
         public EmailApp(UserService userService)
         {
             _userService = userService;
         }
 
-        // Metoda Run zawiera całą logikę menu i interakcji dla Email
         public void Run(string connectionString)
         {
             Console.WriteLine("--- Aplikacja Zarządzania Użytkownikami (CLR UDT Email) ---");
@@ -57,7 +55,7 @@ namespace UdtReaderApp
                             _userService.DisplayUsers(_userService.SearchUsers("name", searchPart));
                             break;
 
-                        case "4": // Opcja "Usuń użytkownika po ID" stała się case "4" po usunięciu poprzedniej "4"
+                        case "4": 
                             Console.Write("Podaj ID użytkownika do usunięcia: ");
                             if (!int.TryParse(Console.ReadLine(), out int deleteId))
                             {
@@ -80,7 +78,7 @@ namespace UdtReaderApp
 
                         case "0":
                             Console.WriteLine("Zamykanie aplikacji...");
-                            return; // Wyjdź z Run() i wróć do Main
+                            return; 
 
                         default:
                             Console.WriteLine("Nieprawidłowa opcja. Spróbuj ponownie.");

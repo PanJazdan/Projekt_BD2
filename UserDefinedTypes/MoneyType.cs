@@ -13,13 +13,11 @@ public struct MoneyType : INullable, IBinarySerialize
     public decimal Amount;
     public string Currency;
 
-    // List of supported ISO currency codes (expand as needed)
     private static readonly List<string> IsoCurrencies = new List<string>()
     {
         "PLN", "EUR", "USD", "GBP", "CHF", "JPY", "CNY"
     };
 
-    // Simplified exchange rates (relative to PLN)
     private static readonly Dictionary<string, decimal> ToPLN = new Dictionary<string, decimal>()
     {
         {"PLN", 1m},
@@ -62,7 +60,6 @@ public struct MoneyType : INullable, IBinarySerialize
         if (!ToPLN.ContainsKey(Currency) || !ToPLN.ContainsKey(targetCurrency))
             throw new ArgumentException("Unsupported currency for conversion.");
 
-        // Convert to PLN, then to target
         decimal amountInPLN = Amount * ToPLN[Currency];
         decimal result = amountInPLN / ToPLN[targetCurrency];
         return new MoneyType(decimal.Round(result, 2), targetCurrency.ToUpperInvariant());

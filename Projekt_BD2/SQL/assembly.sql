@@ -1,3 +1,14 @@
+IF NOT EXISTS (
+    SELECT name 
+    FROM sys.databases 
+    WHERE name = N'BD_Projekt'
+)
+BEGIN
+    CREATE DATABASE BD_Projekt;
+END
+GO
+
+
 drop table if exists Users;
 drop table if exists Vectors;
 drop table if exists Units;

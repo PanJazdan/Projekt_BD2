@@ -84,10 +84,7 @@ namespace UdtReaderApp.Services
             return _locationRepository.GetLocationById(id);
         }
 
-        /// <summary>
-        /// Finds the closest location in the table to the given GeoLocation.
-        /// Returns null if the table is empty.
-        /// </summary>
+
         public Location FindClosestLocationById(int referenceId)
         {
             var reference = GetLocationById(referenceId);

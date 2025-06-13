@@ -7,18 +7,17 @@ using UdtReaderApp.Utils;
 
 namespace UdtReaderApp
 {
-    // Klasa VectorApp zarządza interakcją z użytkownikiem dla typu Vector3D
+  
     public class VectorApp
     {
         private readonly VectorService _vectorService;
 
-        // Konstruktor przyjmuje VectorService (wstrzyknięcie zależności)
+    
         public VectorApp(VectorService vectorService)
         {
             _vectorService = vectorService;
         }
 
-        // Metoda Run zawiera całą logikę menu i interakcji dla Vector3D
         public void Run(string connectionString)
         {
             Console.WriteLine("--- Aplikacja Zarządzania Wektorami (CLR UDT Vector3D) ---");

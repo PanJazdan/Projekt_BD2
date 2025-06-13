@@ -128,7 +128,7 @@ namespace UdtReaderApp.Repositories
             ColorRGB blended = color1.ColorValue.Blend(color2.ColorValue, ratio);
             return new Color
             {
-                Id = 0, // New color, not yet in DB
+                Id = 0, 
                 ColorValue = blended
             };
         }

@@ -11,7 +11,7 @@ public struct GeoLocation : INullable, IBinarySerialize
     private bool is_Null;
 
     public double Latitude;  // -90 to 90
-    public double Longitude; // -180 to 180 (with wrapping)
+    public double Longitude; // -180 to 180 
 
     public bool IsNull => is_Null;
 
@@ -62,7 +62,7 @@ public struct GeoLocation : INullable, IBinarySerialize
         if (s.IsNull) return Null;
         string value = s.Value.Trim();
 
-        // Accept formats: "(lat, lon)" or "lat (N/S), lon (E/W)"
+      
         value = value.Trim('(', ')');
         string[] parts = value.Split(',');
 
@@ -71,7 +71,7 @@ public struct GeoLocation : INullable, IBinarySerialize
 
         double lat, lon;
 
-        // Try to parse with direction
+
         if (parts[0].Trim().EndsWith("N", StringComparison.OrdinalIgnoreCase) ||
             parts[0].Trim().EndsWith("S", StringComparison.OrdinalIgnoreCase))
         {
@@ -141,8 +141,8 @@ public struct GeoLocation : INullable, IBinarySerialize
         if (g1.IsNull || g2.IsNull)
             return SqlDouble.Null;
 
-        // Haversine formula
-        double R = 6371.0; // Earth radius in km
+  
+        double R = 6371.0; 
         double lat1 = g1.Latitude * Math.PI / 180.0;
         double lat2 = g2.Latitude * Math.PI / 180.0;
         double dLat = (g2.Latitude - g1.Latitude) * Math.PI / 180.0;

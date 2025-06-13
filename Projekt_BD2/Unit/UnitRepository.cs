@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
-using UdtReaderApp.Models; // For Unit and UnitSI
+using UdtReaderApp.Models; 
 
 namespace UdtReaderApp.Repositories
 {
@@ -16,7 +16,7 @@ namespace UdtReaderApp.Repositories
             _connectionString = connectionString;
         }
 
-        // Add a Unit to the database (UnitSI as UDT)
+ 
         public void AddUnit(Unit unit)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -34,7 +34,7 @@ namespace UdtReaderApp.Repositories
             }
         }
 
-        // Get all Units from the database
+
         public List<Unit> GetAllUnits()
         {
             var units = new List<Unit>();
@@ -63,7 +63,7 @@ namespace UdtReaderApp.Repositories
             return units;
         }
 
-        // Get a Unit by ID
+
         public Unit GetUnitById(int id)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -91,7 +91,7 @@ namespace UdtReaderApp.Repositories
             return null;
         }
 
-        // --- Operations using UnitSI static methods ---
+      
 
         public UnitSI AddUnits(int id1, int id2)
         {

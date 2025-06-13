@@ -2,27 +2,25 @@
 using System.Data.SqlTypes;
 using System.IO;
 using System.Text.RegularExpressions;
-using Microsoft.SqlServer.Server; // Niezbędne dla atrybutów CLR UDT
+using Microsoft.SqlServer.Server; 
 using Microsoft.SqlServer.Types;
 
 [Serializable]
-// Zmieniamy Format.Native na Format.UserDefined dla zmiennych stringów.
-// MaxByteSize powinno być wystarczająco duże, aby pomieścić zserializowany obiekt (np. 8000 jest bezpieczną górną granicą dla varbinary(max))
-[SqlUserDefinedType(Format.UserDefined, IsByteOrdered = true, MaxByteSize = 8000, ValidationMethodName = "ValidateEmailUdt")]
+
+[SqlUserDefinedType(Format.UserDefined, IsByteOrdered = true, MaxByteSize =128, ValidationMethodName = "ValidateEmailUdt")]
 public struct Email : INullable, IBinarySerialize
 {
     private bool is_Null;
     public string username;
     public string domain;
 
-    // Implementacja INullable
+
     public bool IsNull => is_Null;
 
-    // Statyczna właściwość zwracająca instancję NULL
+
     public static Email Null => new Email { is_Null = true };
 
-    // Metoda Parse: Konwertuje SqlString (z SQL Server) na Email UDT
-    [SqlMethod(OnNullCall = false)] // Ta metoda nie będzie wywoływana, jeśli wejściowy SqlString jest NULL
+    [SqlMethod(OnNullCall = false)] 
     public static Email Parse(SqlString s)
     {
         if (s.IsNull)
@@ -51,7 +49,6 @@ public struct Email : INullable, IBinarySerialize
         };
     }
 
-    // Walidacja lokalnej części adresu e-mail (przed '@')
     private static bool IsValidLocalPart(string local)
     {
         if (string.IsNullOrEmpty(local) || local.Length > 64)
@@ -68,7 +65,6 @@ public struct Email : INullable, IBinarySerialize
         return true;
     }
 
-    // Walidacja domeny (po '@')
     private static bool IsValidDomain(string domain)
     {
         if (string.IsNullOrEmpty(domain) || domain.Length > 255)
@@ -93,26 +89,25 @@ public struct Email : INullable, IBinarySerialize
         return true;
     }
 
-    // Dodana metoda walidacji dla CLR UDT, wywoływana przez SQL Server
+
     public bool ValidateEmailUdt()
     {
-        if (this.is_Null) return true; // NULL jest zawsze walidowany jako poprawny
+        if (this.is_Null) return true;
         return IsValidLocalPart(this.username) && IsValidDomain(this.domain);
     }
 
 
-    [SqlMethod(OnNullCall = false)] // Opcjonalnie: nie wywołuj, jeśli instancja jest NULL
+    [SqlMethod(OnNullCall = false)] 
     public override string ToString()
     {
         if (this.IsNull) return "NULL";
         return $"{username}@{domain}";
     }
 
-    // Implementacja IBinarySerialize: Odczyt i zapis danych dla SQL Server
-    // Te metody są wywoływane przez SQL Server, gdy używasz Format.UserDefined
+
     public void Read(BinaryReader r)
     {
-        is_Null = r.ReadBoolean(); // Najpierw odczytujemy flagę null
+        is_Null = r.ReadBoolean(); 
         if (!is_Null)
         {
             username = r.ReadString();
@@ -122,36 +117,34 @@ public struct Email : INullable, IBinarySerialize
 
     public void Write(BinaryWriter w)
     {
-        w.Write(is_Null); // Zapisujemy flagę null
+        w.Write(is_Null); 
         if (!is_Null)
         {
-            w.Write(username ?? string.Empty); // Zapisujemy string, obsługując null
+            w.Write(username ?? string.Empty); 
             w.Write(domain ?? string.Empty);
         }
     }
 
-    // --- ZMIENIONA METODA GET HASH CODE ---
-    // Implementacja Equals jest kluczowa dla typów wartości
     public override bool Equals(object obj)
     {
         if (obj == null || GetType() != obj.GetType())
             return false;
 
         Email other = (Email)obj;
-        if (is_Null && other.is_Null) return true; // Dwa nulle są sobie równe
-        if (is_Null != other.is_Null) return false; // Null i nie-null nie są sobie równe
+        if (is_Null && other.is_Null) return true; 
+        if (is_Null != other.is_Null) return false; 
 
-        // Porównujemy bez uwzględniania wielkości liter (zgodnie z normalizacją)
+ 
         return username.Equals(other.username, StringComparison.OrdinalIgnoreCase) &&
                domain.Equals(other.domain, StringComparison.OrdinalIgnoreCase);
     }
 
-    // Implementacja GetHashCode() dla kompatybilności z .NET Framework
+
     public override int GetHashCode()
     {
-        if (is_Null) return 0; // Hash code dla NULL
+        if (is_Null) return 0; 
 
-        // Standardowa implementacja GetHashCode dla wielu pól w .NET Framework
+    
         unchecked
         {
             int hash = 17;
@@ -159,12 +152,5 @@ public struct Email : INullable, IBinarySerialize
             hash = hash * 23 + (domain != null ? domain.ToLowerInvariant().GetHashCode() : 0);
             return hash;
         }
-    }
-
-    [SqlMethod(OnNullCall = false)]
-    public bool IsCorporateDomain()
-    {
-        if (this.IsNull) return false;
-        return domain.EndsWith(".com") || domain.EndsWith(".org") || domain.EndsWith(".net");
     }
 }

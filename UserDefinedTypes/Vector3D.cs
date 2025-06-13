@@ -5,25 +5,24 @@ using System.Globalization;
 using System.IO;
 
 [Serializable]
-// Ustawiamy Format.UserDefined dla niestandardowej serializacji
+
 [SqlUserDefinedType(Format.UserDefined, IsByteOrdered = false, MaxByteSize = 3 * sizeof(float), ValidationMethodName = "ValidateVector3D")]
 public struct Vector3D : INullable, IBinarySerialize
 {
     private bool is_Null;
 
-    // Współrzędne wektora
+
    
     public float x;
     public float y;
     public float z;
 
-    // Właściwość do reprezentowania wartości NULL
     public bool IsNull
     {
         get { return is_Null; }
     }
 
-    // Statyczna instancja NULL
+
     public static Vector3D Null
     {
         get
@@ -34,7 +33,6 @@ public struct Vector3D : INullable, IBinarySerialize
         }
     }
 
-    // Konstruktor dla łatwego tworzenia instancji
     public Vector3D(float x, float y, float z)
     {
         this.x = x;
@@ -43,14 +41,14 @@ public struct Vector3D : INullable, IBinarySerialize
         this.is_Null = false;
     }
 
-    // Walidacja wektora (tutaj prosta, bo float zawsze jest poprawny)
+
     private bool ValidateVector3D()
     {
        
         return !this.IsNull;
     }
 
-    // Metoda Parse: konwertuje string na Vector3D
+
     [SqlMethod(OnNullCall = false)]
     public static Vector3D Parse(SqlString s)
     {
@@ -58,7 +56,7 @@ public struct Vector3D : INullable, IBinarySerialize
             return Null;
 
         string value = s.Value;
-        // Oczekujemy formatu: [x,y,z]
+
         if (!value.StartsWith("[") || !value.EndsWith("]"))
         {
             throw new ArgumentException("Invalid format for Vector3D. Expected [x,y,z].");
@@ -73,7 +71,7 @@ public struct Vector3D : INullable, IBinarySerialize
 
         float xVal, yVal, zVal;
 
-        // ***** KLUCZOWA ZMIANA TUTAJ: UŻYCIE CultureInfo.InvariantCulture *****
+
         if (!float.TryParse(components[0].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out xVal) ||
             !float.TryParse(components[1].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out yVal) ||
             !float.TryParse(components[2].Trim(), NumberStyles.Any, CultureInfo.InvariantCulture, out zVal))
@@ -83,14 +81,14 @@ public struct Vector3D : INullable, IBinarySerialize
 
         Vector3D v = new Vector3D(xVal, yVal, zVal);
 
-        if (!v.ValidateVector3D()) // Jeśli jest statyczna prywatna metoda walidacji
+        if (!v.ValidateVector3D()) 
         {
             throw new ArgumentException("Invalid Vector3D values after parsing.");
         }
         return v;
     }
 
-    // Metoda ToString: konwertuje Vector3D na string w formacie [x,y,z]
+
     [SqlMethod(OnNullCall = false)]
     public override string ToString()
     {
@@ -99,7 +97,6 @@ public struct Vector3D : INullable, IBinarySerialize
         return $"[{x},{y},{z}]";
     }
 
-    // Operacje arytmetyczne na wektorach (zdefiniowane jako metody SQL)
 
     // Dodawanie wektorów: [x1,y1,z1] + [x2,y2,z2] = [x1+x2,y1+y2,z1+z2]
     [SqlMethod(OnNullCall = false)]
@@ -131,7 +128,7 @@ public struct Vector3D : INullable, IBinarySerialize
         return new Vector3D(v.x * scalar, v.y * scalar, v.z * scalar);
     }
 
-    // Mnożenie skalarne (dot product): [x1,y1,z1] * [x2,y2,z2] = x1*x2 + y1*y2 + z1*z2
+   // [x1,y1,z1] * [x2,y2,z2] = x1*x2 + y1*y2 + z1*z2
     [SqlMethod(OnNullCall = false)]
     public static SqlDouble DotProduct(Vector3D v1, Vector3D v2) // Zwraca SqlDouble, bo float w SQL to float w C#
     {
@@ -141,7 +138,7 @@ public struct Vector3D : INullable, IBinarySerialize
         return new SqlDouble(v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
     }
 
-    // Mnożenie wektorowe (cross product):
+   
     // [x1,y1,z1] x [x2,y2,z2] = [(y1*z2 - z1*y2), (z1*x2 - x1*z2), (x1*y2 - y1*x2)]
     [SqlMethod(OnNullCall = false)]
     public static Vector3D CrossProduct(Vector3D v1, Vector3D v2)
@@ -168,21 +165,21 @@ public struct Vector3D : INullable, IBinarySerialize
         }
         catch (EndOfStreamException)
         {
-            this.is_Null = true; // Strumień pusty, więc to jest wartość NULL
+            this.is_Null = true; 
         }
     }
 
     public void Write(BinaryWriter w)
     {
         if (is_Null)
-            return; // Nie zapisujemy nic dla NULL, jeśli IsByteOrdered jest false
+            return; 
 
         w.Write(x);
         w.Write(y);
         w.Write(z);
     }
 
-    // Opcjonalne: Implementacja Equals i GetHashCode dla lepszej porównywalności
+    
     public override bool Equals(object obj)
     {
         if (obj == null || !(obj is Vector3D))
@@ -200,15 +197,15 @@ public struct Vector3D : INullable, IBinarySerialize
     public override int GetHashCode()
     {
         if (this.IsNull)
-            return 0; // Standardowo dla null
+            return 0; 
 
-        // Alternatywna implementacja GetHashCode() kompatybilna ze starszymi .NET Framework
-        unchecked // Używamy unchecked, aby operacje arytmetyczne mogły przepełnić się bez rzucania wyjątku
+
+        unchecked 
         {
-            int hash = 17; // Pierwsza liczba pierwsza
-            hash = hash * 23 + x.GetHashCode(); // Mnożymy przez inną liczbę pierwszą i dodajemy hash x
-            hash = hash * 23 + y.GetHashCode(); // Powtarzamy dla y
-            hash = hash * 23 + z.GetHashCode(); // Powtarzamy dla z
+            int hash = 17; 
+            hash = hash * 23 + x.GetHashCode(); 
+            hash = hash * 23 + y.GetHashCode();
+            hash = hash * 23 + z.GetHashCode(); 
             return hash;
         }
     }

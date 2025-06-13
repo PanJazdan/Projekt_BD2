@@ -69,7 +69,7 @@ namespace UdtReaderApp.Repositories
             return vectors;
         }
 
-        //Get a Vector3D by vector table ID
+
         public Vector3D GetVectorById(int id)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -108,7 +108,7 @@ namespace UdtReaderApp.Repositories
             }
         }
 
-        // Add two vectors by their IDs and return the result
+
         public Vector3D AddVectors(int id1, int id2)
         {
             Vector3D v1 = GetVectorById(id1);
@@ -116,7 +116,7 @@ namespace UdtReaderApp.Repositories
             return Vector3D.Add(v1, v2);
         }
 
-        // Subtract two vectors by their IDs and return the result
+  
         public Vector3D SubtractVectors(int id1, int id2)
         {
             Vector3D v1 = GetVectorById(id1);
@@ -124,14 +124,14 @@ namespace UdtReaderApp.Repositories
             return Vector3D.Subtract(v1, v2);
         }
 
-        // Multiply a vector by a scalar
+
         public Vector3D MultiplyVectorByScalar(int id, float scalar)
         {
             Vector3D v = GetVectorById(id);
             return Vector3D.MultiplyByScalar(v, scalar);
         }
 
-        // Dot product of two vectors
+     
         public double DotProduct(int id1, int id2)
         {
             Vector3D v1 = GetVectorById(id1);
@@ -140,7 +140,7 @@ namespace UdtReaderApp.Repositories
             return result.IsNull ? double.NaN : result.Value;
         }
 
-        // Cross product of two vectors
+
         public Vector3D CrossProduct(int id1, int id2)
         {
             Vector3D v1 = GetVectorById(id1);
