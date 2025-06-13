@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UdtReaderApp.Models;
 using UdtReaderApp.Services;
+using UdtReaderApp.Utils;
 
 namespace UdtReaderApp
 {
@@ -40,6 +41,7 @@ namespace UdtReaderApp
                 Console.WriteLine("2. Wyświetl wszystkie wartości");
                 Console.WriteLine("3. Usuń wartość po ID");
                 Console.WriteLine("4. Przelicz walutę na inną");
+                Console.WriteLine("5. Dodaj rekordy przez plik CSV");
                 Console.WriteLine("0. Wyjdź");
                 Console.Write("Wybierz opcję: ");
 
@@ -92,6 +94,16 @@ namespace UdtReaderApp
                                 Console.WriteLine("Błąd: " + ex.Message);
                                 Console.ResetColor();
                             }
+                            break;
+                        case "5":
+                            Console.Write("Podaj ścieżkę do pliku CSV: ");
+                            string csvPath = Console.ReadLine();
+                            CsvImporter.ImportCsvToTable(
+                                connectionString,
+                                "Users",
+                                csvPath,
+                                new Dictionary<string, string> { { "MoneyValue", "MoneyType" } }
+                            );
                             break;
 
                         case "0":
