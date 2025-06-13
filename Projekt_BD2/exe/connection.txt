@@ -1,0 +1,1 @@
+Data Source=LAPTOPJAN\SQLEXPRESS;Initial Catalog=BD_Projekt;Integrated Security=True;Encrypt=False

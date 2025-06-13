@@ -1,5 +1,6 @@
 ﻿// Plik: Program.cs
 using System;
+using System.IO;
 using UdtReaderApp;
 using UdtReaderApp.Services;
 
@@ -9,16 +10,27 @@ namespace UdtReaderApp
     {
         static void Main(string[] args)
         {
-            //////////////////Miejsce do wpisania własnej nazwy servera i utworzonej w nim bazy danych
+            ////////////////// NALEŻY SIĘ UPEWNIĆ, ŻE PLIK connection.txt ISTNIEJE ORAZ //////////////////
+            ////////////////// ZAWIERA POPRAWNY CONNECTION STRING DO BAZY DANYCH SQL SERVER //////////////
+            //// W miejsce Data Source=<server_name>;Initial Catalog=<database_name> /////////////////////
+            // należy wpisać odpowiednią nazwę serwera i bazy danych z umieszczonymi odpowiednimi tabelami //////
+            ////////////////// ////////////////// ////////////////// ////////////////// //////////////////
+            string connectionStringPath = "connection.txt";
             ////////////////// ////////////////// ////////////////// ////////////////// //////////////////
             ////////////////// ////////////////// ////////////////// ////////////////// //////////////////
-            string connectionString = @"Data Source=LAPTOPJAN\SQLEXPRESS;
-                                           Initial Catalog=BD_Projekt;
-                                           Integrated Security=True;
-                                           Encrypt=False";
-            ////////////////// ////////////////// ////////////////// ////////////////// //////////////////
-            ////////////////// ////////////////// ////////////////// ////////////////// //////////////////
-            ////////////////// ////////////////// ////////////////// ////////////////// //////////////////
+            string connectionString;
+            try
+            {
+                connectionString = File.ReadAllText(connectionStringPath).Trim();
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Błąd podczas odczytu pliku z connection stringiem: {ex.Message}");
+                Console.ResetColor();
+                return;
+            }
+            
 
             UserService userService = new UserService(connectionString);
             EmailApp emailApp = new EmailApp(userService);
