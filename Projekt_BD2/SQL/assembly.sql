@@ -21,12 +21,18 @@ IF TYPE_ID('MoneyType') IS NOT NULL
 IF EXISTS (SELECT * FROM sys.assemblies WHERE name = 'UDTAssembly')
     DROP ASSEMBLY UDTAssembly;
 
---ALTER DATABASE [TwojaBazaDanych] SET TRUSTWORTHY ON;
 
+---------------------------------------------------------------------------------
+--- Nale¿y wpisaæ w³asn¹ œcie¿kê lokalizacji plików, zazwyczaj bêdzie ona w strukturze
+---      [POCZ¥TEK ŒCIE¯KI]\UserDefinedTypes\bin\Debug\UserDefinedTypes.dll
+---------------------------------------------------------------------------------
 CREATE ASSEMBLY UDTAssembly
 FROM 'D:\Visual Studio\Projects\Bazy danych\UserDefinedTypes\bin\Debug\UserDefinedTypes.dll'
 WITH PERMISSION_SET = SAFE;
 GO
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+
 
 CREATE TYPE Email
 EXTERNAL NAME UDTAssembly.[Email];

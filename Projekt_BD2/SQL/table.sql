@@ -9,12 +9,10 @@ CREATE TABLE Vectors(
     );
 
 
-
 CREATE TABLE Units(
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Ut UnitSI NOT NULL
     );
-
 
 
 CREATE TABLE Locations(
